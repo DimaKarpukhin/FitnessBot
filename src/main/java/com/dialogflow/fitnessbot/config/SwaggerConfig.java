@@ -1,4 +1,4 @@
-package com.yaroslav.news.config;
+package com.dialogflow.fitnessbot.config;
 
 
 import org.springframework.context.annotation.Bean;

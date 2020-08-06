@@ -1,4 +1,4 @@
-package com.yaroslav.news.json;
+package com.dialogflow.fitnessbot.json;
 
 public class QueryResult {
     public Parameters getParameters() {
