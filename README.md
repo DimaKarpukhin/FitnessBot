@@ -1,1 +1,1 @@
-# FitnessBot
+# FitnessBot app
