@@ -42,7 +42,7 @@ public class AppController {
             String subject = webhook.getQueryResult().getParameters().getSubject();
             if ((subject != null) && !(subject.equals(""))) {
                 response.setFulfillmentText(process(subject) );
-                response.setSource("something");
+                response.setSource("something!");
             }
         };
         return response;
@@ -74,16 +74,17 @@ public class AppController {
         String res = "";
         String text = doQuery(keyword);
         Pattern title = Pattern.compile("meta itemprop=.itemReviewed. content=\"([A-Za-z, 0-9.]+)\">");
-//      Pattern price = Pattern.compile("<span class=\"a-offscreen\">([0-9.$]+)</span><span aria-hidden=\"true\"><span class=\"a-price-symbol\">");
+        Pattern image = Pattern.compile("src=\"([A-Za-z,_:/ 0-9.]+)\"");
         System.out.println(text.replace("\n", ""));
         String[] prods = (text.replace("\n", "").split("data-bb-category=\"search\" {8}"));
         for (String p : prods) {
             System.out.println(">>>>> " + p);
             Matcher m = title.matcher(p);
-//            Matcher pr = price.matcher(p);
-            if (m.find()) {
-                System.out.println(m.group(1));
-                res += m.group(1) + " / ";
+            Matcher img = image.matcher(p);
+            if (m.find() && img.find()) {
+                System.out.println("@@@@@@@@@@@" + m.group(1));
+                System.out.println("@@@@@@@@@@@" + img.group(1));
+                res += m.group(1) + " " + img.group(1) + " / ";
             }
 
         }
