@@ -84,7 +84,7 @@ public class AppController {
             if (m.find() && img.find()) {
                 System.out.println("@@@@@@@@@@@" + m.group(1));
                 System.out.println("@@@@@@@@@@@" + img.group(1));
-                res += m.group(1) + " " + img.group(1) + " / ";
+                res += m.group(1) + "\n" + img.group(1) + "\n";
             }
 
         }
