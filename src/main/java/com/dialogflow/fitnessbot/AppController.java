@@ -74,7 +74,7 @@ public class AppController {
         String res = "";
         String text = doQuery(keyword);
         Pattern title = Pattern.compile("meta itemprop=.itemReviewed. content=\"([A-Za-z, 0-9.]+)\">");
-        Pattern image = Pattern.compile("src=\"([A-Za-z,_:/ 0-9.]+)\"");
+        Pattern image = Pattern.compile("src=\"([A-Za-z,_:/ 0-9.]+)jpg\"");
         System.out.println(text.replace("\n", ""));
         String[] prods = (text.replace("\n", "").split("data-bb-category=\"search\" {8}"));
         for (String p : prods) {
