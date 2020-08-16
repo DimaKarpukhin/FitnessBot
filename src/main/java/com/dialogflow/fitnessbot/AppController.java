@@ -36,13 +36,13 @@ public class AppController {
 
     @RequestMapping(value = "", method = RequestMethod.POST)
     public BotResponse postBot(@RequestBody BotWebhook webhook) throws IOException {
-        System.out.println(webhook);
+        System.out.println("??"+webhook);
         BotResponse response = new BotResponse();
         if (webhook != null && webhook.getQueryResult() != null && webhook.getQueryResult().getParameters() != null) {
             String subject = webhook.getQueryResult().getParameters().getSubject();
             if ((subject != null) && !(subject.equals(""))) {
                 response.setFulfillmentText(process(subject) );
-                response.setSource("something!");
+                response.setSource("something!!");
             }
         };
         return response;
@@ -52,7 +52,7 @@ public class AppController {
         OkHttpClient client = new OkHttpClient();
         System.out.println("query for " + keyword);
         Request request = new Request.Builder()
-                .url("https://shared-search.bodybuilding.com/slp/full?context=all&query=protein")
+                .url("https://shared-search.bodybuilding.com/slp/full?context=all&query=" + keyword)
                 .method("GET", null)
                 .addHeader("Connection", "keep-alive")
                 .addHeader("Upgrade-Insecure-Requests", "1")
@@ -75,16 +75,18 @@ public class AppController {
         String text = doQuery(keyword);
         Pattern title = Pattern.compile("meta itemprop=.itemReviewed. content=\"([A-Za-z, 0-9.]+)\">");
         Pattern image = Pattern.compile("src=\"([A-Za-z,_:/ 0-9.]+)jpg\"");
+        Pattern link = Pattern.compile("href=\"([A-Za-z,-=?_:/0-9.]+)\"");
         System.out.println(text.replace("\n", ""));
-        String[] prods = (text.replace("\n", "").split("data-bb-category=\"search\" {8}"));
-        for (String p : prods) {
-            System.out.println(">>>>> " + p);
-            Matcher m = title.matcher(p);
-            Matcher img = image.matcher(p);
-            if (m.find() && img.find()) {
-                System.out.println("@@@@@@@@@@@" + m.group(1));
-                System.out.println("@@@@@@@@@@@" + img.group(1));
-                res += m.group(1) + "\n" + img.group(1) + "\n\n";
+        String[] productsList = (text.replace("\n", "").split("data-bb-category=\"search\" {8}"));
+        for (String product : productsList) {
+            System.out.println(">>>>> " + product);
+            Matcher titleMatcher = title.matcher(product);
+            Matcher imgMatcher = image.matcher(product);
+            Matcher linkMatcher = link.matcher(product);
+            if (titleMatcher.find() && imgMatcher.find() && linkMatcher.find()) {
+                System.out.println("@@@@@@@@@@@" + titleMatcher.group(1));
+                System.out.println("@@@@@@@@@@@" + imgMatcher.group(1));
+                res += titleMatcher.group(1) + "\n" + imgMatcher.group(1) + "\n" + linkMatcher.group(1) + "\n\n";
             }
 
         }
