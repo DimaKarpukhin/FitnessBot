@@ -86,7 +86,7 @@ public class AppController {
             if (titleMatcher.find() && imgMatcher.find() && linkMatcher.find()) {
                 System.out.println("@@@@@@@@@@@" + titleMatcher.group(1));
                 System.out.println("@@@@@@@@@@@" + imgMatcher.group(1));
-                res += titleMatcher.group(1) + "\n" + imgMatcher.group(1) + "\n" + linkMatcher.group(1) + "\n\n";
+                res += titleMatcher.group(1) + "\n" + imgMatcher.group(1).replace("X_130", "X_450") + "\n" + linkMatcher.group(1) + "\n\n";
             }
 
         }
