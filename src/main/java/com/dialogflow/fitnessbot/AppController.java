@@ -86,8 +86,8 @@ public class AppController {
             if (titleMatcher.find() && imgMatcher.find() && linkMatcher.find()) {
                 System.out.println("@@@@@@@@@@@" + titleMatcher.group(1));
                 System.out.println("@@@@@@@@@@@" + imgMatcher.group(1));
-                String fixedImage = imgMatcher.group(1).replace("130", "450");
-                res += titleMatcher.group(1) + "\n" + fixedImage + "\n" + linkMatcher.group(1) + "\n\n";
+                String fixedImage = "og: " + imgMatcher.group(1).replace("130", "300");
+                res += "\n" + titleMatcher.group(1) + "\n" + fixedImage + "\n" + linkMatcher.group(1) + "\n";
                 System.out.println("@@@@@@@@@@@" + fixedImage);
             }
 
