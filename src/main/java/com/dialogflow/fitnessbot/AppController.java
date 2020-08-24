@@ -72,7 +72,7 @@ public class AppController
             {
                 String fixedImage = imageMatcher.group(1).replace("130", "300");
                 res += "\n" + titleMatcher.group(1) + "\n" + linkMatcher.group(1) + "\n";
-                System.out.println(">>>>>" + titleMatcher.group(1) + "<br>" + linkMatcher.group(1) + "<br><br>");
+                System.out.println(">>>>>" + titleMatcher.group(1) + "<br>" + linkMatcher.group(1) + "<br><br><br>");
             }
         }
 
