@@ -71,7 +71,7 @@ public class AppController
             if (titleMatcher.find() && imageMatcher.find() && linkMatcher.find())
             {
                 String fixedImage = imageMatcher.group(1).replace("130", "300");
-                res += titleMatcher.group(1) + "\n" + linkMatcher.group(1) + "\n\n\n";
+                res += titleMatcher.group(1) + "\n" + linkMatcher.group(1) + "<br><br>";
                 System.out.println(">>>>>" + titleMatcher.group(1) + "\n" + linkMatcher.group(1) + "\n");
             }
         }
