@@ -41,8 +41,8 @@ public class AppController {
 
     private String process(String i_Keyword) throws IOException {
         String result = "";
-        String successMsg = "Sorry, but I didn't find anything :(\n";
-        String failureMsg = "Here's what I found for you:\n";
+        String failureMsg = "Sorry, but I didn't find anything :-(\n=====================================\n";
+        String successMsg = "Here's what I found for you:\n============================\n";
         String queryResult = doQuery(i_Keyword);
         Pattern title = Pattern.compile("meta itemprop=.itemReviewed. content=\"([A-Za-z, 0-9.]+)\">");
         Pattern link = Pattern.compile("href=\"([A-Za-z,-=?_:/0-9.]+)\"");
@@ -61,8 +61,7 @@ public class AppController {
             }
         }
 
-        result = result.equals("") ? failureMsg: successMsg + result;
-        return result;
+        return result.equals("") ? failureMsg: successMsg + result;
     }
 
     private String doQuery(String i_Keyword) throws IOException {
