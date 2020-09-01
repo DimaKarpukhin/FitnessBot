@@ -1,10 +1,4 @@
 package com.dialogflow.fitnessbot;
-
-//import com.squareup.okhttp.OkHttpClient;
-//import com.squareup.okhttp.Request;
-//import com.squareup.okhttp.Response;
-//import com.yaroslav.news.json.BotResponse;
-//import com.yaroslav.news.json.BotWebhook;
 import com.dialogflow.fitnessbot.json.BotResponse;
 import com.dialogflow.fitnessbot.json.BotWebhook;
 import com.squareup.okhttp.OkHttpClient;
@@ -16,75 +10,65 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
-import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-/**
- * Spring Boot Hello案例
- * <p>
- * Created by bysocket on 26/09/2017.
- */
 @RestController
 @RequestMapping(value = "/app")
-public class AppController
-{
+public class AppController {
+    private static  final String TARGET_URL = "https://shared-search.bodybuilding.com/slp/full?context=all&query=";
+
     @RequestMapping(value = "", method = RequestMethod.GET)
-    public String SayHello()
+    public String sayHello()
     {
         return "Hello";
     }
 
     @RequestMapping(value = "", method = RequestMethod.POST)
-    public BotResponse GetBotResponse(@RequestBody BotWebhook i_Webhook) throws IOException
-    {
+    public BotResponse getBotResponse(@RequestBody BotWebhook i_Webhook) throws IOException {
         BotResponse response = new BotResponse();
         if (i_Webhook != null && i_Webhook.getQueryResult() != null
-                && i_Webhook.getQueryResult().getParameters() != null)
-        {
+                && i_Webhook.getQueryResult().getParameters() != null) {
             String subject = i_Webhook.getQueryResult().getParameters().getSubject();
-            if ((subject != null) && !(subject.equals("")))
-            {
+            if ((subject != null) && !(subject.equals(""))) {
                 response.setFulfillmentText(process(subject) );
                 response.setSource("something!!");
             }
-        };
+        }
 
         return response;
     }
 
-    private String process(String i_Keyword) throws IOException
-    {
-        String res = "";
+    private String process(String i_Keyword) throws IOException {
+        String result = "";
+        String successMsg = "Sorry, but I didn't find anything :(";
+        String failureMsg = "Here's what I found for you:\n";
         String queryResult = doQuery(i_Keyword);
         Pattern title = Pattern.compile("meta itemprop=.itemReviewed. content=\"([A-Za-z, 0-9.]+)\">");
-        Pattern image = Pattern.compile("src=\"([A-Za-z,_:/ 0-9.]+jpg)\"");
         Pattern link = Pattern.compile("href=\"([A-Za-z,-=?_:/0-9.]+)\"");
+        Pattern image = Pattern.compile("src=\"([A-Za-z,_:/ 0-9.]+jpg)\"");
         System.out.println(">>>" + queryResult.replace("\n", ""));
         String[] options = (queryResult.replace("\n", "").split("data-bb-category=\"search\" {8}"));
 
-        for (String option : options)
-        {
+        for (String option : options) {
             Matcher titleMatcher = title.matcher(option);
-            Matcher imageMatcher = image.matcher(option);
             Matcher linkMatcher = link.matcher(option);
-            if (titleMatcher.find() && imageMatcher.find() && linkMatcher.find())
-            {
-                String fixedImage = imageMatcher.group(1).replace("130", "300");
-                res += titleMatcher.group(1) + "\n" + linkMatcher.group(1) + "<br><br>";
+            Matcher imageMatcher = image.matcher(option);
+            if (titleMatcher.find() && linkMatcher.find()){// && imageMatcher.find()) {
+                //String fixedImage = imageMatcher.group(1).replace("130", "300");
+                result += titleMatcher.group(1) + "\n" + linkMatcher.group(1) + "\n\n";
                 System.out.println(">>>>>" + titleMatcher.group(1) + "\n" + linkMatcher.group(1) + "\n");
             }
         }
 
-        return res;
+        return result.isEmpty()? failureMsg:  successMsg + result;
     }
 
-    private String doQuery(String i_Keyword) throws IOException
-    {
+    private String doQuery(String i_Keyword) throws IOException {
         OkHttpClient client = new OkHttpClient();
         System.out.println("query for " + i_Keyword);
         Request request = new Request.Builder()
-                .url("https://shared-search.bodybuilding.com/slp/full?context=all&query=" + i_Keyword)
+                .url(TARGET_URL + i_Keyword)
                 .method("GET", null).build();
 //                .addHeader("Connection", "keep-alive")
 //                .addHeader("Upgrade-Insecure-Requests", "1")
