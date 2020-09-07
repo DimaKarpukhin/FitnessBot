@@ -1,4 +1,4 @@
-package com.dialogflow.fitnessbot.json;
+package com.dialogflow.fitnessbot.entities;
 
 public class BotResponse {
     String fulfillmentText;

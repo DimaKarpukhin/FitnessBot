@@ -1,6 +1,6 @@
-package com.dialogflow.fitnessbot;
-import com.dialogflow.fitnessbot.json.BotResponse;
-import com.dialogflow.fitnessbot.json.BotWebhook;
+package com.dialogflow.fitnessbot.controllers;
+import com.dialogflow.fitnessbot.entities.BotResponse;
+import com.dialogflow.fitnessbot.entities.BotWebhook;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
@@ -86,5 +86,4 @@ public class AppController {
 
         return response.body().string();
     }
-
 }

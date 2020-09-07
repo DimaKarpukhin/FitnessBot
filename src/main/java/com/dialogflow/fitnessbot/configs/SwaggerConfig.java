@@ -1,4 +1,4 @@
-package com.dialogflow.fitnessbot.config;
+package com.dialogflow.fitnessbot.configs;
 
 
 import org.springframework.context.annotation.Bean;
